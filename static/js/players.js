@@ -95,7 +95,7 @@ window.app.pages.players = (function(_players) {
 
 		var clanLinks = {};
 		$.each(app.json.clans, function(clanId, clan) {
-			clanLinks[clanId] = '<a href="#clan=' + clanId + '">' + clan + '</a>';
+			clanLinks[clanId] = '<a href="' + app.url('clan=' + clanId) + '">' + clan + '</a>';
 		});
 		var column = [
 			//[filter,    header,      rotate, class, list, listLinks]
@@ -124,9 +124,9 @@ window.app.pages.players = (function(_players) {
 
 			dataList.push([
 				'', //№
-				'<a href="#player=' + playerId + '">' + player[2] + '</a>', //имя
+				'<a href="' + app.url('player=' + playerId) + '">' + player[2] + '</a>', //имя
 				player[3]||Infinity, //клан
-				'<a href="#player=' + playerId + '">' + player[0] + '</a>', //герой
+				'<a href="' + app.url('player=' + playerId) + '">' + player[0] + '</a>', //герой
 				player[4], //пол
 				player[5], //раса
 				player[1], //уровень

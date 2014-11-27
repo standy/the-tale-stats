@@ -79,7 +79,7 @@ window.app.pages.place = (function(_place) {
 			var council = councilsList[i].data;
 			data[councilId] = $.extend({}, council, {
 				councilHtml: councilId ? app.draw.councilShort(councilId, council) : '',
-				townHtml: councilId ? '' : '<a href="#place=' + placeId + '">Город "' + app.json.places[placeId].name + '"</a>',
+				townHtml: councilId ? '' : '<a href="' + app.url('place=' + placeId) + '">Город "' + app.json.places[placeId].name + '"</a>',
 				friendsHtmls: council.friends ? council.friends.map(app.draw.player) : '',
 				enemiesHtmls: council.enemies ? council.enemies.map(app.draw.player) : ''
 			});

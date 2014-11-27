@@ -1,1 +1,1 @@
-<a href="#place={{id}}">{{name}}</a>
+<a href="#!place/{{id}}">{{name}}</a>

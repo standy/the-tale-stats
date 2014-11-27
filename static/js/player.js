@@ -12,7 +12,7 @@ window.app.pages.player = (function(_player) {
 		if (clanId) {
 			var clanName = app.json.clans[clanId];
 			title += ' из клана ' + clanName;
-			header += ' из клана ' + clanName.link('#clan=' + clanId);
+			header += ' из клана ' + clanName.link(app.url('clan=' + clanId));
 		}
 		app.dom.header(header);
 		app.dom.title(title);

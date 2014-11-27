@@ -87,7 +87,7 @@ window.app.pages.clans = (function(_clans) {
 
 		var clanLinks = {};
 		$.each(app.json.clans, function(clanId, clan) {
-			clanLinks[clanId] = '<a href="#clan=' + clanId + '">' + clan + '</a>';
+			clanLinks[clanId] = '<a href="' + app.url('clan=' + clanId) + '">' + clan + '</a>';
 		});
 
 		function clanPlacesList(clanId, relation) {
@@ -159,7 +159,7 @@ window.app.pages.clans = (function(_clans) {
 
 			dataList.push([
 				'', //№
-				'<a href="#clan=' + clanId + '">' + clanName + '</a>', //имя
+				'<a href="' + app.url('clan=' + clanId) + '">' + clanName + '</a>', //имя
 				(playersByClan[clanId] || []).length,
 				Math.round(level*100)/100,
 				racesData,

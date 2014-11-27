@@ -13,6 +13,8 @@ CanvasJS.addCultureInfo("ru", {
 
 
 var app = (function(app) {
+	Events(app);
+
 	app.logStart = new Date(2014, 10, 1);
 	app.logStartSpec = new Date(2014, 10, 3);
 	/* загрузка данных */
@@ -102,20 +104,65 @@ var app = (function(app) {
 			};
 		}
 		function parseRequest(str) {
+			if (str.slice(0,2) === '#!') str = str.slice(2);
 			var params = {};
 			if (!str) return false;
 			var split = str.split('&');
 			for (var i=0; i<split.length; i++) {
 				var s = split[i];
-				var p = s.split('=');
+				var p = s.split(/[\/=]/);
 				params[p[0]] = p[1];
 			}
 			return params;
 		}
 	})();
+	app.url = function(str) {
+		str = str.replace(/=/g, '/');
+		return '#!' + str;
+	};
 	/* eo misc */
 
-
+	/* filter func */
+	app.utils.addFilterHandlers = function addFilterHandlers() {
+		var $filter = $('#filter');
+		$filter.on('change', 'input', function() {
+			var params = getFilter();
+			applyFilter(params);
+		});
+		var filterCols = $('#table').find('thead th').map(function() {return $(this).data('filter')||''; }).get();
+		function applyFilter(params) {
+			var $trs = $('#table').find('tbody tr');
+			var count = 0;
+			$trs.each(function() {
+				var isInFilter = true;
+				var $tr = $(this);
+				var $tds = $tr.children();
+				params.forEach(function(param) {
+					if (!param.values.length) return;
+					var col = filterCols.indexOf(param.filter);
+					var val = $tds.eq(col).data('value');
+					isInFilter = isInFilter && param.values.indexOf(val) >= 0;
+				});
+				$tr.toggle(isInFilter);
+				if (isInFilter) count++;
+			});
+			$('#filter-count').html('всего: ' + count);
+		}
+		function getFilter() {
+			return $('#filter').children('.form-group').map(function() {
+				var $group = $(this);
+				var values = $group.find('input:checked').map(function() {
+					return $(this).data('value');
+				}).get();
+				if (values == 'all') values = [];
+				return {
+					filter: $group.data('filter'),
+					values: values
+				}
+			}).get();
+		}
+	};
+	/* eo filter func */
 
 
 	/* загрузка словарей */
@@ -130,22 +177,35 @@ var app = (function(app) {
 		)
 			.done(function() {
 //				console.log('--ready--\n', app);
-				readyCallbacks.forEach(function(fn) {
-					fn.call(app);
-				})
+				app.emit('ready');
+//				readyCallbacks.forEach(function(fn) {
+//					fn.call(app);
+//				})
 			});
 	}
 	/* eo загрузка словарей */
 
 
-	var readyCallbacks = [route];
-	app.ready = function(fn) {
-		readyCallbacks.push(fn);
-	};
+	app.on('ready', route);
+	app.on('ready', function() {
+		$(window).on('hashchange', route);
+	});
+
+	app.on('pageview', function(url, req) {
+		if (url.slice(0,2) === '#!') url = url.slice(2);
+		if (url.slice(0,1) !== '/') url = '/' + url;
+		ga('send', 'pageview', url);
+	});
+
+	app.on('click', function(href, id) {
+		ga('send', 'event', href, id);
+	});
+
 
 	var routeTry = 0;
 	function route() {
-		var req = app.req = app.utils.parseRequest(window.location.hash.slice(1));
+		var url = window.location.hash;
+		var req = app.req = app.utils.parseRequest(url);
 		try {
 			if (!req) {
 				app.pages.index();
@@ -166,10 +226,15 @@ var app = (function(app) {
 			} else if ('players' in req) {
 				app.pages.players.init();
 			}
+			app.emit('pageview', url, req);
 			routeTry = 0;
 		} catch (e) {
-			if (routeTry < 2) window.setTimeout(route, 1000);
 			routeTry++;
+			if (routeTry <= 2) {
+				window.setTimeout(route, 1000);
+			} else {
+				app.emit('error', e);
+			}
 		}
 	}
 
@@ -179,10 +244,10 @@ var app = (function(app) {
 		dom.header('Обзор');
 		dom.breadcrumb();
 		var content = [
-			'<a href="#places">Города</a>',
-			'<a href="#councils">Советники</a>',
-			'<a href="#players">Игроки</a>',
-			'<a href="#clans">Кланы</a>'
+			'<a href="' + app.url('places') + '">Города</a>',
+			'<a href="' + app.url('councils') + '">Советники</a>',
+			'<a href="' + app.url('players') + '">Игроки</a>',
+			'<a href="' + app.url('clans') + '">Кланы</a>'
 		];
 		dom.content(content.join('<br>'));
 		dom.nav();
@@ -203,55 +268,55 @@ var app = (function(app) {
 		var ids = Array.prototype.slice.call(arguments, 1);
 		var bc = [{
 			text: 'Сказочная статистика',
-			href: '#'
+			href: ''
 		}];
 		if (type === 'place') {
 			bc.push({
 				text: 'Города',
-				href: '#places'
+				href: 'places'
 			});
 			if (ids.length) bc.push({
 				text: app.json.places[id].name,
-				href: '#place=' + id
+				href: 'place=' + id
 			});
 		}
 		if (type === 'council') {
 			bc.push({
 				text: 'Советники',
-				href: '#councils'
+				href: 'councils'
 			});
 			if (ids.length>1) bc.push({
 				text: app.json.places[ids[1]].name,
-				href: '#place=' + ids[1]
+				href: 'place=' + ids[1]
 			});
 			if (ids.length) bc.push({
 				text: 'Советник ' + app.json.councils[id][0],
-				href: '#council=' + id
+				href: 'council=' + id
 			});
 		} else if (type === 'player') {
 			bc.push({
 				text: 'Игроки',
-				href: '#players'
+				href: 'players'
 			});
 			if (id) bc.push({
 				text: '' + app.json.players[id][0],
-				href: '#player=' + id
+				href: 'player=' + id
 			});
 		} else if (type === 'clan') {
 			bc.push({
 				text: 'Кланы',
-				href: '#clans'
+				href: 'clans'
 			});
 			if (id) bc.push({
 				text: app.json.clans[id],
-				href: '#clan=' + id
+				href: 'clan=' + id
 			});
 		}
 
 		breadcrumb(bc);
 		function breadcrumb(list) {
 			var html = list.map(function(item) {
-				return '<li><a href="' + item.href + '">' + item.text + '</a></li> '
+				return '<li><a href="' + app.url(item.href) + '">' + item.text + '</a></li> '
 			}).join('');
 			$('#breadcrumb').html(html);
 		}
@@ -278,7 +343,7 @@ var app = (function(app) {
 			$navTop.find('[data-type="' + type + '"]').parent().addClass('active');
 		}
 		function selectPlace(id, cls) {
-			$navPlaces.filter('[href="#place=' + id + '"]').addClass('label label-' + cls);
+			$navPlaces.filter('[data-id="' + id + '"]').addClass('label label-' + cls);
 		}
 	};
 
@@ -440,73 +505,33 @@ var app = (function(app) {
 		}).join('');
 
 		if (!html) html += '<i>Нет записей</i>';
-		return '<dl class="history-list dl-horizontal">' + html + '</dl>';
+		return '<dl class="history-list dl-horizontal" data-container="history">' + html + '</dl>';
 	};
 	/* eo templates */
 
 
-	/* filter func */
-	app.utils.addFilterHandlers = function addFilterHandlers() {
-		var $filter = $('#filter');
-		$filter.on('change', 'input', function() {
-			var params = getFilter();
-			applyFilter(params);
-		});
-		var filterCols = $('#table').find('thead th').map(function() {return $(this).data('filter')||''; }).get();
-		function applyFilter(params) {
-			var $trs = $('#table').find('tbody tr');
-			var count = 0;
-			$trs.each(function() {
-				var isInFilter = true;
-				var $tr = $(this);
-				var $tds = $tr.children();
-				params.forEach(function(param) {
-					if (!param.values.length) return;
-					var col = filterCols.indexOf(param.filter);
-					var val = $tds.eq(col).data('value');
-					isInFilter = isInFilter && param.values.indexOf(val) >= 0;
-				});
-				$tr.toggle(isInFilter);
-				if (isInFilter) count++;
-			});
-			$('#filter-count').html('всего: ' + count);
-		}
-		function getFilter() {
-			return $('#filter').children('.form-group').map(function() {
-				var $group = $(this);
-				var values = $group.find('input:checked').map(function() {
-					return $(this).data('value');
-				}).get();
-				if (values == 'all') values = [];
-				return {
-					filter: $group.data('filter'),
-					values: values
-				}
-			}).get();
-		}
-	};
-	/* eo filter func */
 
 
 
 
 
-
-	app.ready(function() {
-		$(window).on('hashchange', function() {
-			route();
-		});
-	});
 
 	$('body').on('mouseenter', 'a', function() {
 		var $a = $(this);
 		var href = $a.attr('href');
-		$('a[href="' + href + '"]').not($a).addClass('hover');
+		var $links = $('a[href="' + href + '"]').not($a);
+		$links.addClass('hover');
 		$a.on('mouseleave.hovershine', function() {
 			$a.off('.hovershine');
-			$('a[href="' + href + '"]').removeClass('hover');
+			$links.removeClass('hover');
 		})
-	});
+	})
+		.on('click', 'a', function() {
+			var href = $(this).attr('href');
+			var $container = $(this).closest('[id], [data-container]');
+			var id = $container.data('container') || $container.attr('id');
+			app.emit('click', href, id);
+		});
 
 	return app;
 })(window.app || {});

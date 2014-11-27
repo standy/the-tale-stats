@@ -101,7 +101,7 @@ window.app.pages.places = (function(_places) {
 			/* данные по городу */
 			dataList.push([
 				'',
-				'<a href="#place=' + placeId + '">' + place.name + '</a>', //название
+				'<a href="' + app.url('place=' + placeId) + '">' + place.name + '</a>', //название
 				spec, //специализация
 				place.frontier|0, // фронтир
 				leadModifier, // развитие

@@ -105,6 +105,7 @@ window.app.pages.council = (function(_council) {
 		for (var param in params) if (params.hasOwnProperty(param)) {
 			var cdata = $.extend(true, {legendText: params[param]}, sets.global, sets[param]);
 			cdata.dataPoints = councilLogs.map(function(councilLog) {
+				if (!councilLog.data) return;
 				var y = councilLog.data[param];
 				if (y && (param == 'friends' || param == 'enemies')) y = y.length;
 				return {
@@ -137,7 +138,7 @@ window.app.pages.council = (function(_council) {
 
 
 
-		var chart = new CanvasJS.Chart(type, options);
+		var chart = new CanvasJS.Chart('chart-' + type, options);
 
 		chart.render();
 	}

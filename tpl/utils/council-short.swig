@@ -1,1 +1,1 @@
-<a href="#council={{id}}">{{name}}</a> {{race}}-{{prof}}, {{mastery}}
+<a href="#!council/{{id}}">{{name}}</a> {{race}}-{{prof}}, {{mastery}}

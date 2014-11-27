@@ -95,7 +95,7 @@ window.app.pages.councils = (function(_councils) {
 
 			dataList.push([
 				'',
-				'<a href="#council=' + councilId + '">' + council[0] + '</a>', //name
+				'<a href="' + app.url('council=' + councilId) + '">' + council[0] + '</a>', //name
 				app.draw.placeShort(placeId), //placeId
 				council[2], //raceId
 				council[3], //profId
