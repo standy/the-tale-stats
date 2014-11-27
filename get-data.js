@@ -2,10 +2,12 @@ process.title = 'the-tale-stats';
 require('colors');
 var extend = require('extend');
 var fs = require('fs');
+var util = require('util');
 var Q = require('q');
 var cheerio = require('cheerio');
-//var proxy = 'http://proxy.ozon.ru:3128/';
-var request = require('request'); //.defaults({proxy: proxy});
+var proxy = 'http://proxy.ozon.ru:3128/';
+//var request = require('request');
+var request = require('request').defaults({proxy: proxy});
 //request.debug = true;
 
 var moment = require('moment');
@@ -44,10 +46,11 @@ var MASTERIES = verbose.masteries;
 
 
 var startTimeMinutes = 50;
-var wait = startTimeMinutes - moment().minutes();
+var wait = (startTimeMinutes - moment().minutes() + 60) % 60;
+
 console.log('wait %s minutes', wait);
 setTimeout(function() {
-	start();
+//	start();
 	setInterval(start, 60*60*1000);
 }, wait * 60 * 1000);
 
@@ -145,11 +148,10 @@ function processPlace(id, place) {
 		})
 //		.catch(logAppError('32'))
 		.then(function() {
-			return compileFiles(rootRaw + 'place/', root + 'place/', id);
+			return compilePlaces(id);
 		})
 		.catch(logAppError('processPlace'))
 }
-
 function processCell(id, place) {
 	//console.log('processCell', id, place.name);
 	//process.stdout.write('processCell ' + id + ' ' + place.name + '\r');
@@ -165,11 +167,17 @@ function processCell(id, place) {
 		})
 //		.catch(logAppError('32'))
 		.then(function() {
-			return compileFiles(rootRaw + 'cell/', root + 'cell/', id);
+			return compileCells(id);
 		})
 		.catch(logAppError('processCell'))
 }
 
+function compilePlaces(id) {
+	return compileFiles(rootRaw + 'place/', root + 'place/', id);
+}
+function compileCells(id) {
+	return compileFiles(rootRaw + 'cell/', root + 'cell/', id);
+}
 //compileFiles('7');
 function compileFiles(folderFrom, folderTo, id) {
 	//console.log('compileFiles', folderFrom, folderTo, id)
@@ -449,3 +457,63 @@ function remap(id, place) {
 		});
 }
 
+//var brokeDateStr = '2014-11-03T17:00';
+//var brokeDate = moment(brokeDateStr);
+
+//var id = 8;
+//resort(id, places[id])
+//setTimeout(function() {
+//	compileCells(id)
+//		.then(function() {
+//			console.log('compile done')
+//		});
+//}, 5000);
+function resort(id, place) {
+	console.log('remap', id);
+	var folder = rootRaw + 'cell/' + id + '/';
+	var lastModifiers;
+	var order;
+	return readdir(folder)
+		.then(function(files) {
+			files.sort().reverse();
+			var lastDate;
+			var okDate;
+			var okFile;
+			var order;
+			var order1;
+			files.some(function(file) {
+				var date = moment(file.replace('.json', ''), FILE_ISO);
+				if (date.diff(brokeDate) > 0) {
+					okFile = file;
+					okDate = date;
+					return;
+				}
+				if (!order) {
+					var dataOrder = JSON.parse(fs.readFileSync(folder + okFile, 'utf8'));
+					var modifiers = dataOrder.modifiers;
+					order1 = modifiers.map(function(item, i) { return {i: i, item: item}});
+					order1.sort(function(a,b) {return b.item - a.item});
+					console.log('order1', j(order1));
+					order = [];
+					order1.forEach(function(ord, i) { order[ord.i] = {i: i, item: ord.item}; });
+					console.log('order', j(order));
+					console.log(j(order));
+					console.log('ok', j(modifiers));
+					console.log('sr', (modifiers.sort(function(a,b) { return b-a}) + '').gray);
+				}
+				var data = JSON.parse(fs.readFileSync(folder + file, 'utf8'));
+				modifiers = data.modifiers;
+				modifiers.sort(function(a,b) { return b-a});
+				var newModifiers = order.map(function(ord) { return modifiers[ord.i]; });
+				console.log('orig', (modifiers + '').gray);
+				console.log('res ', j(newModifiers), date.format());
+				data.modifiers = newModifiers;
+				fs.writeFile(folder + file, JSON.stringify(data));
+			});
+		})
+		.catch(logAppError('resort'));
+}
+
+function j(obj) {
+	return util.inspect(obj, {colors: true}).replace(/\s+/g, ' ');
+}
