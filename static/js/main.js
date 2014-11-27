@@ -198,7 +198,7 @@ var app = (function(app) {
 	});
 
 	app.on('click', function(href, id) {
-		ga('send', 'event', href, id);
+		ga('send', 'event', 'click', href, id);
 	});
 
 
