@@ -382,12 +382,13 @@ window.app.pages.place = (function(_place) {
 			},
 			5: {
 				sort: 90,
-				//visible: false,
+				visible: false,
 				label: "производство"
 			},
 			7: {
 				sort: 120,
-				hide: true,
+//				hide: true,
+				visible: false,
 				label: "дары Хранителей"
 			},
 			8: {
