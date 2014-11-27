@@ -5,7 +5,7 @@ window.app.pages.clan = (function(_clan) {
 		var clanId = app.req.clan;
 		var clanName = app.json.clans[clanId];
 		app.dom.title('Клан ' + clanName);
-		app.dom.header('Клан ' + clanName);
+		app.dom.header('Клан ' + clanName + ' <small><a target="_blank" href="http://the-tale.org/accounts/clans/' + clanId + '">подробнее</a></small>');
 		app.dom.nav('clan', clanId);
 		app.dom.breadcrumb('clan', clanId);
 
@@ -28,14 +28,14 @@ window.app.pages.clan = (function(_clan) {
 	function draw(clanId) {
 		var clanPlayers = getClanPlayers(clanId);
 		var html = '';
+		html += drawFilter();
 		html += '<div id="table"></div>';
 		html += drawInfo(clanId, clanPlayers);
 		html += drawHistoryClanPlayers(clanId, clanPlayers);
-//		html += drawFilter();
 		app.dom.content(html);
 
 		drawTable(clanPlayers);
-//		app.utils.addFilterHandlers();
+		app.utils.addFilterHandlers();
 	}
 
 
@@ -49,9 +49,19 @@ window.app.pages.clan = (function(_clan) {
 	}
 	function drawFilter() {
 		var filter = [
-
+			{
+				label: app.json.verbose.translate.genders.toLowerCase(),
+				filter: 'gender',
+				type: 'checkbox',
+				inputs: app.json.verbose.genders.map(function(item, index) { return {text: item, value: index} })
+			},
+			{
+				label: app.json.verbose.translate.races.toLowerCase(),
+				filter: 'race',
+				type: 'checkbox',
+				inputs: app.json.verbose.races.map(function(item, index) { return {text: item, value: index} })
+			}
 		];
-
 		return app.tmpl['data/filter']({filter: filter});
 	}
 
@@ -122,21 +132,19 @@ window.app.pages.clan = (function(_clan) {
 
 		var html = '';
 
+		var homeListHtml = clanPlacesList(clanData.home);
+		if (homeListHtml) {
+			html += '<h4>Прописан</h4>' + '<div class="over">' + homeListHtml + '</div>'
+		}
+		var friendCouncilListHtml = clanCouncilsList(clanData.friendCouncil);
+		if (friendCouncilListHtml) {
+			html += '<h4>Помогает</h4>' + '<div class="over">' + friendCouncilListHtml + '</div>'
+		}
+		var enemyCouncilListHtml = clanCouncilsList(clanData.enemyCouncil);
+		if (enemyCouncilListHtml) {
+			html += '<h4>Мешает</h4>' + '<div class="over">' + enemyCouncilListHtml + '</div>'
+		}
 
-		html +=
-			[
-				'<h4>Прописан</h4>',
-				'<div class="over">' + clanPlacesList(clanData.home) + '</div>',
-				'<h4>Помогает</h4>',
-//				'<div class="over">' + clanPlacesList(clanData.friend) + '</div>',
-//				'<h5>Советники:</h5>',
-				'<div class="over">' + clanCouncilsList(clanData.friendCouncil) + '</div>',
-
-				'<h4>Мешает</h4>',
-//				'<div class="over">' + clanPlacesList(clanData.enemy) + '</div>',
-//				'<h5>Советники:</h5>',
-				'<div class="over">' + clanCouncilsList(clanData.enemyCouncil) + '</div>'
-			].join('');
 
 
 		return html;
