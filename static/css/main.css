@@ -1,0 +1,123 @@
+.custom-scroll_bar-y { width: 4px; }
+
+body {
+	overflow-y: scroll;
+}
+.table-tiny {
+	width: auto;
+}
+
+.canvasjs-chart-credit {
+	display: none;
+}
+
+h2 {
+	margin: 50px 0 30px;
+}
+.hover {
+	color: #2a6496;
+	/*text-decoration: underline;*/
+	/*text-shadow: 0 0 2px rgba(66, 139, 202, .4);*/
+}
+.label.hover {
+	color: #fff;
+}
+
+/* history list */
+.history-list dt.date {
+	margin-top: 15px;
+	text-align: left;
+	float: none;
+	width: auto;
+	font-weight: bold
+}
+.history-list dt {
+	width: 50px;
+	font-weight: normal;
+}
+.history-list dd {
+	margin-left: 70px;
+}
+/* eo history list */
+
+
+/* table data */
+.clans-table {
+	min-height: 500px;
+}
+.table-data th {
+	vertical-align: bottom !important;
+}
+.table-data {
+	counter-reset: table;
+}
+.table-data td.number:before {
+	counter-increment: table;
+	content: counter(table)
+}
+
+.table-data th.rotate {
+	height: 100px;
+	white-space: nowrap;
+}
+
+.table-data th.rotate > span {
+	display: block;
+	transform:
+		translate(15px, -10px)
+		rotate(315deg);
+	width: 30px;
+}
+
+.table-data td.over-height {
+	width: 150px;
+}
+.table-data td.over-height .over{
+	max-height: 125px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.table-data .spec {
+	width: 140px;
+}
+.table-data .left {
+	text-align: left;
+}
+.table-data .right {
+	text-align: right;
+}
+.table-data .center {
+	text-align: center;
+}
+
+
+.table-data .sort {
+	cursor: pointer;
+}
+.table-data .caret {
+	visibility: hidden;
+	margin-right: -10px;
+}
+.table-data .sort-up .caret {
+	visibility: visible;
+}
+.table-data .sort-down .caret {
+	visibility: visible;
+	border-top: 0;
+	border-bottom: 4px solid;
+}
+/* eo table data */
+
+
+/* filter */
+.filter .control-label {
+	word-wrap: break-word;
+
+}
+.filter .radio-inline,
+.filter .checkbox-inline {
+	margin-left: 0;
+	margin-right: 10px;
+}
+/* eo filter */

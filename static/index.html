@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Сказочная статистика</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="css/vendor/bootstrap.css">
+	<link rel="stylesheet" href="css/vendor/jquery.custom-scroll.css">
+	<link rel="stylesheet" href="css/main.css">
+
+	<!--<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>-->
+</head>
+<body>
+<div class="navbar navbar-default" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>-->
+			<a class="navbar-brand" href="#">Сказочная статистика <sup>[beta]</sup></a>
+		</div>
+		<ul class="nav navbar-nav" id="nav-top">
+			<li><a data-type="place" href="#places">Города</a></li>
+			<li><a data-type="council" href="#councils">Советники</a></li>
+			<li><a data-type="player" href="#players">Игроки</a></li>
+			<li><a data-type="clan" href="#clans">Кланы</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="container">
+	<nav id="nav-places" class="">
+		<ul class="list-inline">
+			<li><a href="#place=1">Красные Дюны</a></li>
+			<li><a href="#place=2">Нортин</a></li>
+			<li><a href="#place=3">Юн-Жут</a></li>
+			<li><a href="#place=4">Озёрный Город</a></li>
+			<li><a href="#place=5">Штиль</a></li>
+			<li><a href="#place=6">Оркостан</a></li>
+			<li><a href="#place=7">Крушд</a></li>
+			<li><a href="#place=8">Светлая Поляна</a></li>
+			<li><a href="#place=9">Лориэн</a></li>
+			<li><a href="#place=10">Велистиан</a></li>
+			<li><a href="#place=11">Гастион</a></li>
+			<li><a href="#place=12">Стор-Фаен</a></li>
+			<li><a href="#place=13">Моргор</a></li>
+			<li><a href="#place=14">Простор</a></li>
+			<li><a href="#place=15">Луд</a></li>
+			<li><a href="#place=16">Дворфунгард</a></li>
+			<li><a href="#place=17">Поборотим</a></li>
+			<li><a href="#place=18">Настыр</a></li>
+			<li><a href="#place=19">Ашур-Донал</a></li>
+			<li><a href="#place=20">Лорадо</a></li>
+			<li><a href="#place=21">Гориндор</a></li>
+			<li><a href="#place=22">Лотир-Нериэн</a></li>
+			<li><a href="#place=23">Лазурь</a></li>
+			<li><a href="#place=24">Новогодний</a></li>
+			<li><a href="#place=25">Карахен</a></li>
+			<li><a href="#place=26">Коркатталь</a></li>
+			<li><a href="#place=27">Карнгард</a></li>
+			<li><a href="#place=28">Инд-Дирна</a></li>
+			<li><a href="#place=29">Ол</a></li>
+			<li><a href="#place=30">Ад-Альхар</a></li>
+			<li><a href="#place=31">Мурмеллашум</a></li>
+			<li><a href="#place=32">Кайлердор</a></li>
+			<li><a href="#place=33">Руины</a></li>
+			<li><a href="#place=34">Пёстрая Корова</a></li>
+			<li><a href="#place=35">Истарост</a></li>
+			<li><a href="#place=36">Тролльвиль</a></li>
+			<li><a href="#place=37">Азарок</a></li>
+			<li><a href="#place=38">Кель-Абан</a></li>
+			<li><a href="#place=39">Сва-Лок</a></li>
+			<li><a href="#place=40">Синам-Сиджас</a></li>
+			<li><a href="#place=41">Сухой Дол</a></li>
+			<li><a href="#place=42">Харир</a></li>
+			<li><a href="#place=43">Эйндалион</a></li>
+			<li><a href="#place=44">Таргард</a></li>
+		</ul>
+	</nav>
+
+	<h1 id="header"></h1>
+
+
+	<ol class="breadcrumb" id="breadcrumb"><li><a href="#">Сказочная статистика</a></li></ol>
+
+	<div id="content">Подождите...</div>
+
+	<hr>
+
+	<footer>
+		<p>standy &copy; 2014</p>
+	</footer>
+</div>
+<!-- /container -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/vendor/canvasjs.min.js"></script>
+<script src="js/vendor/bootstrap.js"></script>
+<script src="js/vendor/moment.js"></script>
+<script src="js/vendor/swig.min.js"></script>
+<script src="js/vendor/jquery.custom-scroll.js"></script>
+<script src="js/utils/tables.js"></script>
+
+<script src="js/main.js"></script>
+<script src="js/place.js"></script>
+<script src="js/places.js"></script>
+<script src="js/council.js"></script>
+<script src="js/councils.js"></script>
+<script src="js/player.js"></script>
+<script src="js/players.js"></script>
+<script src="js/clan.js"></script>
+<script src="js/clans.js"></script>
+
+
+</body>
+</html>
