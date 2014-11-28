@@ -1,8 +1,15 @@
 <div class="row">
 	<div class="col-lg-4">
+		<ul class="list-group">
 		{% for council in data %}
-			<div class="panel panel-default">
-				<div class="panel-heading" data-toggle="collapse" data-target="#c-{{loop.key}}">
+			<li class="list-group-item">
+				{% if council.councilHtml %}
+						<span class="badge" title="влиятельность">
+							{{ council.inf }}%
+						</span>
+				{% endif %}
+
+				<div class="panel1-heading" data-toggle="collapse" data-target="#c-{{loop.key}}">
 					<span class="caret"></span>
 					{% if council.councilHtml -%}
 						{{ council.councilHtml|safe -}}
@@ -10,33 +17,46 @@
 						{{ council.townHtml|safe -}}
 					{%- endif -%}
 					<br>
-					{{ council.friends.length|default(0) }}/{{ council.enemies.length|default(0) }},
-					{% if council.councilHtml %}
-						влиятельность:
-						{{ council.inf }}%,
-					{% endif %}
-					бонусы:
-					{{ council.plus }}% / {{ council.minus }}%
+					<span class="text-muted">
+						<span class="{% if council.friends.length %}text-success{% else %}text-muted{% endif %}">{{ council.friends.length|default(0) }}</span>
+						{{- '/' -}}
+						<span class="{% if council.enemies.length %}text-danger{% else %}text-muted{% endif %}">{{ council.enemies.length|default(0) }}</span>,
+						бонусы:
+						<span class="{% if council.plus %}text-success{% else %}text-muted{% endif %}">{{ council.plus }}%</span>
+						{{- ' / ' -}}
+						<span class="{% if council.minus %}text-danger{% else %}text-muted{% endif %}">{{ council.minus }}%</span>
+					</span>
 				</div>
 				<div id="c-{{loop.key}}" class="panel-collapse collapse">
 					<!--<div class="panel-body">-->
-						<ul class="list-group">
-							{% if council.friends %}
-								<li class="list-group-item"><span class="text-success">Друзья</span></li>
-								<li class="list-group-item">{{council.friendsHtmls|safe|join('</li><li class="list-group-item">')}}</li>
+					<br>
+					<ul class="list-unstyled">
+						{% for relation in ['friends', 'enemies'] %}
+							{% if council[relation] %}
+								<li class="list-group-item1">
+									{% if relation === 'friends' %}
+										<span class="text-success">Друзья</span>
+									{% else %}
+										<span class="text-danger">Враги</span>
+									{% endif %}
+								</li>
+								{% for data in council[relation + 'Data'] %}
+									<li class="list-group-item1">
+										<small class="pull-right">{{ data.daysStr }}</small>
+										{{ data.html|safe }}
+									</li>
+								{% endfor %}
 							{% endif %}
-							{% if council.enemies %}
-								<li class="list-group-item"><span class="text-danger">Враги</span></li>
-								<li class="list-group-item">{{council.enemiesHtmls|safe|join('</li><li class="list-group-item">')}}</li>
-							{% endif %}
-							{% if !council.enemies && !council.friends %}
-								<li class="list-group-item">нет</li>
-							{% endif %}
-						</ul>
+						{% endfor %}
+						{% if !council.enemies && !council.friends %}
+							<li class="list-group-item1">нет</li>
+						{% endif %}
+					</ul>
 					<!--</div>-->
 				</div>
-			</div>
+			</li>
 		{% endfor %}
+		</ul>
 	</div>
 	<div class="col-lg-8">
 		<div class="chart" id="chart-councils" style="width: 100%; height: 400px;" ></div>

@@ -65,10 +65,24 @@ var app = (function(app) {
 	app.utils = (function() {
 		return {
 			parseRequest: parseRequest,
+			pluralize: pluralize,
 			arrayCross: arrayCross,
 			arrayAdds: arrayAdds,
-			arrayDiff: arrayDiff
+			arrayDiff: arrayDiff,
+			arrayUnique: arrayUnique
 		};
+		function pluralize(num, texts, separator) {
+			num = (num|0) % 100;
+			var cases = [2, 0, 1, 1, 1, 2];
+			return (separator ? num + separator : '') + texts[(num>4 && num<20) ? 2 : cases[(num%10<5) ? num%10 : 5]];
+		}
+		function arrayUnique(arr) {
+			for (var i=1; i<arguments.length; i++) {
+				var arg = arguments[i];
+				if (arg.length) arr = arr.concat(arg);
+			}
+			return arr.filter(function(item, i) { return arr.indexOf(item) === i; })
+		}
 		function arrayCross(list1, list2) {
 			list1 = list1 || [];
 			list2 = list2 || [];

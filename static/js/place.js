@@ -13,6 +13,7 @@ window.app.pages.place = (function(_place) {
 			app.getJson('cell/' + placeId),
 			app.getTmpl('place/table'),
 			app.getTmpl('place/councils-table'),
+			app.getTmpl('utils/place-short'),
 			app.getTmpl('utils/council-short'),
 			app.getTmpl('utils/council'),
 			app.getTmpl('utils/player'),
@@ -37,7 +38,7 @@ window.app.pages.place = (function(_place) {
 		app.dom.header(header);
 
 		var html = '';
-		html += drawHistoryCouncils(placeLogs, placeId);
+		html += drawCouncils(placeLogs, placeId);
 
 		html += drawTable('parameters', cellLogs[0]);
 		html += drawTable('modifiers', cellLogs[0], 1);
@@ -51,14 +52,14 @@ window.app.pages.place = (function(_place) {
 		//});
 	}
 
-	function drawHistoryCouncils(placeLogs, placeId) {
+	function drawCouncils(placeLogs, placeId) {
 		var html = '<h2>Советники</h2>';
-		html += drawCouncilsTable(placeLogs[0], placeId);
+		html += drawCouncilsTable(placeLogs, placeId);
 		return html
 	}
 
-	function drawCouncilsTable(placeLog, placeId) {
-
+	function drawCouncilsTable(placeLogs, placeId) {
+		var placeLog = placeLogs[0];
 		//hash => array
 		var councilsList = [];
 		$.each(placeLog, function(councilId, council) {
@@ -77,18 +78,45 @@ window.app.pages.place = (function(_place) {
 		for (var i=0; i<councilsList.length; i++) {
 			var councilId = councilsList[i].id;
 			var council = councilsList[i].data;
-			data[councilId] = $.extend({}, council, {
-				councilHtml: councilId ? app.draw.councilShort(councilId, council) : '',
-				townHtml: councilId ? '' : '<a href="' + app.url('place=' + placeId) + '">Город "' + app.json.places[placeId].name + '"</a>',
-				friendsHtmls: council.friends ? council.friends.map(app.draw.player) : '',
-				enemiesHtmls: council.enemies ? council.enemies.map(app.draw.player) : ''
+			var councilData = $.extend({}, council);
+
+			['friends', 'enemies'].forEach(function(relation) {
+				if (!council[relation]) return;
+				councilData[relation + 'Data'] = council[relation].map(function(playerId) {
+					var date = lastPresentInLogs(playerId, councilId, relation, placeLogs);
+					var days = moment().diff(date || app.logStart, 'd');
+					return {
+						id: playerId,
+						html: app.draw.playerShort(playerId),
+						days: days,
+						daysStr: (date ? '' : '>') + app.utils.pluralize(days, ['день', 'дня', 'дней'], ' ')
+					}
+				});
+				councilData[relation + 'Data'].sort(function(a,b) { return b.days - a.days});
 			});
+
+			if (councilId) {
+				councilData.councilHtml = app.draw.councilShort(councilId, council)
+			} else {
+				councilData.townHtml ='Город ' + app.draw.placeShort(placeId);
+			}
+			data[councilId] = councilData;
 		}
 		return app.tmpl['place/councils-table']({ data: data });
 		//return html;
 	}
 
+	function lastPresentInLogs(playerId, councilId, relation, placeLogs) {
+		var lastPresent = 'test';
+		for (var i=0; i<placeLogs.length; i++) {
+			var placeLog = placeLogs[i];
+			var players = placeLog[councilId] && placeLog[councilId][relation];
+			if (players && players.indexOf(playerId) < 0) return lastPresent;
+			lastPresent = placeLog.date;
+		}
+	}
 
+	// полная история игроков по городу (события)
 	function drawHistoryPlayers(placeLogs, cellLogs) {
 		var lastCouncils = {};
 		var logs = [];
@@ -163,7 +191,7 @@ window.app.pages.place = (function(_place) {
 
 
 
-
+	// таблицы параметры и специализация
 	function drawTable(type, cellLog, doSort) {
 		var data = cellLog[type].map(function(item, index) {
 			return {
