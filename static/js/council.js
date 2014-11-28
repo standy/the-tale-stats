@@ -134,7 +134,7 @@ window.app.pages.council = (function(_council) {
 				}
 			}
 		};
-		var options = $.extend(true, {}, defaultOptions, sets.options, {data: chartData});
+		var options = $.extend(true, {}, app.chartsSettingsGlobal.options, defaultOptions, sets.options, {data: chartData});
 
 
 
@@ -151,28 +151,11 @@ window.app.pages.council = (function(_council) {
 				title: {
 					//text: 'Специализация'
 				},
-				animationEnabled: false,
-				theme: "theme2",
-				culture: 'ru',
-				axisX: {
-					valueFormatString: "DD.MM"
-				},
 				axisY: {
-					tickThickness: 1,
-					gridThickness: 1,
 					//interval: 20,
 					valueFormatString: "#"
 				},
-				//axisY2:{
-				//	gridThickness: 0,
-				//	tickThickness: 0,
-				//	minimum: 0,
-				//	title: "Влиятельность",
-				//	valueFormatString: "#0"
-				//},
 				axisY2:{
-					gridThickness: 0,
-					tickThickness: 0,
 					minimum: 0,
 					title: "Соратники/противники",
 					valueFormatString: "#0"
@@ -198,135 +181,6 @@ window.app.pages.council = (function(_council) {
 			},
 			minus: {
 				visible: false
-			}
-		},
-		parameters: {
-			options: {
-				animationEnabled: false,
-				//zoomEnabled: true,
-				title: {
-					//text: 'Параметры города'
-				},
-				theme: "theme2",
-				culture: 'ru',
-				axisX: {
-					valueFormatString: "DD.MM"
-				},
-				axisY: {
-					tickThickness: 1,
-					gridThickness: 1,
-					valueFormatString: "#0"
-				},
-				axisY2:{
-					gridThickness: 0,
-					tickThickness: 0,
-					minimum: 0,
-					maximum: 6000,
-					title: "Товары",
-					valueFormatString: "#0"
-				}
-
-			},
-			global: {
-				type: "line",
-				showInLegend: true
-
-				//toolTipContent: "<a href = {name}>{legendText}</a><br />{y}",
-
-			},
-			0: {
-				sort: 100,
-				//visible: false,
-				//hide: true,
-				label: "размер города",
-				k: 10
-			},
-			1: {
-				sort: 100,
-				//visible: false,
-				//hide: true,
-				label: "размер экономики",
-				k: 10
-			},
-			2: {
-				sort: 100,
-				visible: false,
-				//hide: true,
-				label: "радиус владений",
-				k: 10
-			},
-			3: {
-				sort: 100,
-				visible: false,
-				//hide: true,
-				label: "радиус изменений",
-				k: 10
-			},
-			4: {
-				sort: 50,
-				//visible: false,
-				label: "стабильность"
-			},
-			5: {
-				sort: 90,
-				//visible: false,
-				label: "производство"
-			},
-			6: {
-				sort: 10,
-				color: "rgba(12,143,221,.2)",
-				axisYType: "secondary",
-				type: "area",
-				label: "товары"
-			},
-			7: {
-				sort: 120,
-				hide: true,
-				label: "дары Хранителей"
-			},
-			8: {
-				sort: 20,
-				label: "безопасность"
-			},
-			9: {
-				sort: 30,
-				label: "транспорт"
-			},
-			10:{
-				sort: 40,
-				label: "свобода"
-			},
-			11:{
-				sort: 110,
-				visible: false,
-				label: "пошлина"
-			}
-		},
-
-
-
-		modifiers: {
-			options: {
-				title: {
-					//text: 'Специализация'
-				},
-				animationEnabled: false,
-				theme: "theme2",
-				culture: 'ru',
-				axisX: {
-					valueFormatString: "DD.MM"
-				},
-				axisY: {
-					tickThickness: 1,
-					gridThickness: 1,
-					interval: 20,
-					valueFormatString: "#"
-				}
-			},
-			global: {
-				type: "area",
-				showInLegend: true
-				//toolTipContent: "<a href={name}>{legendText}</a><br />{y}<br />{x}"
 			}
 		}
 	};

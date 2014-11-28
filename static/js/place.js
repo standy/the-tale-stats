@@ -270,7 +270,7 @@ window.app.pages.place = (function(_place) {
 				}
 			}
 		};
-		var options = $.extend(true, {}, chartsSettingsGlobal.options, defaultOptions, sets.options, {data: chartData});
+		var options = $.extend(true, {}, app.chartsSettingsGlobal.options, defaultOptions, sets.options, {data: chartData});
 
 
 
@@ -279,22 +279,6 @@ window.app.pages.place = (function(_place) {
 		chart.render();
 	}
 
-	var chartsSettingsGlobal = {
-		options: {
-			animationEnabled: false,
-			theme: "theme2",
-			culture: 'ru',
-			axisY: {
-				tickThickness: 1,
-				gridThickness: 1,
-				tickColor: '#bfbfbf',
-				gridColor: '#bfbfbf'
-			},
-			axisX: {
-				valueFormatString: "DD.MM"
-			}
-		}
-	};
 	var chartsSettings = {
 		councils: {
 			options: {
@@ -316,13 +300,9 @@ window.app.pages.place = (function(_place) {
 		parameters: {
 			options: {
 				axisY: {
-					tickThickness: 1,
-					gridThickness: 1,
 					valueFormatString: "#0"
 				},
 				axisY2:{
-					gridThickness: 0,
-					tickThickness: 0,
 					minimum: 0,
 					maximum: 6000,
 					title: "Товары",
@@ -416,8 +396,6 @@ window.app.pages.place = (function(_place) {
 		modifiers: {
 			options: {
 				axisY: {
-					tickThickness: 1,
-					gridThickness: 1,
 					interval: 20,
 //					minimum: 0,
 					valueFormatString: "#"
