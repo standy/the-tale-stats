@@ -134,7 +134,7 @@ window.app.pages.council = (function(_council) {
 				}
 			}
 		};
-		var options = $.extend(true, {}, defaultOptions, sets.options, {data: chartData});
+		var options = $.extend(true, {}, app.chartsSettingsGlobal.options, defaultOptions, sets.options, {data: chartData});
 
 
 
@@ -148,31 +148,11 @@ window.app.pages.council = (function(_council) {
 	var chartsSettings = {
 		council: {
 			options: {
-				title: {
-					//text: 'Специализация'
-				},
-				animationEnabled: false,
-				theme: "theme2",
-				culture: 'ru',
-				axisX: {
-					valueFormatString: "DD.MM"
-				},
 				axisY: {
-					tickThickness: 1,
-					gridThickness: 1,
 					//interval: 20,
 					valueFormatString: "#"
 				},
-				//axisY2:{
-				//	gridThickness: 0,
-				//	tickThickness: 0,
-				//	minimum: 0,
-				//	title: "Влиятельность",
-				//	valueFormatString: "#0"
-				//},
 				axisY2:{
-					gridThickness: 0,
-					tickThickness: 0,
 					minimum: 0,
 					title: "Соратники/противники",
 					valueFormatString: "#0"
