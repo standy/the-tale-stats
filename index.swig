@@ -7,15 +7,21 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="static/css/vendor/bootstrap.css">
+	<!--<link rel="stylesheet" href="static/css/vendor/bootstrap.css">-->
+	<link rel="stylesheet" href="static/css/themes/bootstrap.spacelab.min.css" data-theme>
 	<link rel="stylesheet" href="static/css/vendor/jquery.custom-scroll.css">
 	<link rel="stylesheet" href="static/css/main.css">
 </head>
 <body>
+<!--<select id="themes">
+	{% for theme in themes -%}
+		<option>{{ theme }}</option>
+	{%- endfor %}
+</select>-->
 <div class="navbar navbar-default" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#">Сказочная статистика <sup>[beta]</sup></a>
+			<a class="navbar-brand" href="#!">Сказочная статистика <sup>[beta]</sup></a>
 		</div>
 		<ul class="nav navbar-nav" id="nav-top">
 			<li><a data-type="place" href="#!places">Города</a></li>
@@ -51,6 +57,12 @@
 <!-- /container -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="static/js/vendor/jquery.min.js"><\/script>')</script>
+<!--<script>
+	$('#themes').on('change', function() {
+		var theme = $(this).val();
+		$('link[data-theme]').attr('href', 'static/css/themes/' + theme);
+	})
+</script>-->
 <script src="static/js/vendor/canvasjs.min.js"></script>
 <script src="static/js/vendor/bootstrap.js"></script>
 <script src="static/js/vendor/moment.js"></script>
