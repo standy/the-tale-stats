@@ -10,11 +10,19 @@
 	<link rel="stylesheet" href="static/css/vendor/bootstrap.css">
 	<link rel="stylesheet" href="static/css/vendor/jquery.custom-scroll.css">
 	<link rel="stylesheet" href="static/css/main.css">
+
+	<!--<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>-->
 </head>
 <body>
 <div class="navbar navbar-default" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
+			<!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>-->
 			<a class="navbar-brand" href="#">Сказочная статистика <sup>[beta]</sup></a>
 		</div>
 		<ul class="nav navbar-nav" id="nav-top">
@@ -29,7 +37,50 @@
 <div class="container">
 	<nav id="nav-places" class="">
 		<ul class="list-inline">
-			<li><a data-id="1" href="#!place/1" >Красные Дюны</a></li><li><a data-id="2" href="#!place/2" >Нортин</a></li><li><a data-id="3" href="#!place/3" >Юн-Жут</a></li><li><a data-id="4" href="#!place/4" >Озёрный Город</a></li><li><a data-id="5" href="#!place/5" >Штиль</a></li><li><a data-id="6" href="#!place/6" >Оркостан</a></li><li><a data-id="7" href="#!place/7" >Крушд</a></li><li><a data-id="8" href="#!place/8" >Светлая Поляна</a></li><li><a data-id="9" href="#!place/9" >Лориэн</a></li><li><a data-id="10" href="#!place/10" >Велистиан</a></li><li><a data-id="11" href="#!place/11" >Гастион</a></li><li><a data-id="12" href="#!place/12" >Стор-Фаен</a></li><li><a data-id="13" href="#!place/13" >Моргор</a></li><li><a data-id="14" href="#!place/14" >Простор</a></li><li><a data-id="15" href="#!place/15" >Луд</a></li><li><a data-id="16" href="#!place/16" >Дворфунгард</a></li><li><a data-id="17" href="#!place/17" >Поборотим</a></li><li><a data-id="18" href="#!place/18" >Настыр</a></li><li><a data-id="19" href="#!place/19" >Ашур-Донал</a></li><li><a data-id="20" href="#!place/20" >Лорадо</a></li><li><a data-id="21" href="#!place/21" >Гориндор</a></li><li><a data-id="22" href="#!place/22" >Лотир-Нериэн</a></li><li><a data-id="23" href="#!place/23" >Лазурь</a></li><li><a data-id="24" href="#!place/24" >Новогодний</a></li><li><a data-id="25" href="#!place/25" >Карахен</a></li><li><a data-id="26" href="#!place/26" >Коркатталь</a></li><li><a data-id="27" href="#!place/27" >Карнгард</a></li><li><a data-id="28" href="#!place/28" >Инд-Дирна</a></li><li><a data-id="29" href="#!place/29" >Ол</a></li><li><a data-id="30" href="#!place/30" >Ад-Альхар</a></li><li><a data-id="31" href="#!place/31" >Мурмеллашум</a></li><li><a data-id="32" href="#!place/32" >Кайлердор</a></li><li><a data-id="33" href="#!place/33" >Руины</a></li><li><a data-id="34" href="#!place/34" >Пёстрая Корова</a></li><li><a data-id="35" href="#!place/35" >Истарост</a></li><li><a data-id="36" href="#!place/36" >Тролльвиль</a></li><li><a data-id="37" href="#!place/37" >Азарок</a></li><li><a data-id="38" href="#!place/38" >Кель-Абан</a></li><li><a data-id="39" href="#!place/39" >Сва-Лок</a></li><li><a data-id="40" href="#!place/40" >Синам-Сиджас</a></li><li><a data-id="41" href="#!place/41" >Сухой Дол</a></li><li><a data-id="42" href="#!place/42" >Харир</a></li><li><a data-id="43" href="#!place/43" >Эйндалион</a></li><li><a data-id="44" href="#!place/44" >Таргард</a></li>
+			<li><a data-id="1"  href="#!place/1" >Красные Дюны</a></li>
+			<li><a data-id="2"  href="#!place/2" >Нортин</a></li>
+			<li><a data-id="3"  href="#!place/3" >Юн-Жут</a></li>
+			<li><a data-id="4"  href="#!place/4" >Озёрный Город</a></li>
+			<li><a data-id="5"  href="#!place/5" >Штиль</a></li>
+			<li><a data-id="6"  href="#!place/6" >Оркостан</a></li>
+			<li><a data-id="7"  href="#!place/7" >Крушд</a></li>
+			<li><a data-id="8"  href="#!place/8" >Светлая Поляна</a></li>
+			<li><a data-id="9"  href="#!place/9" >Лориэн</a></li>
+			<li><a data-id="10" href="#!place/10">Велистиан</a></li>
+			<li><a data-id="11" href="#!place/11">Гастион</a></li>
+			<li><a data-id="12" href="#!place/12">Стор-Фаен</a></li>
+			<li><a data-id="13" href="#!place/13">Моргор</a></li>
+			<li><a data-id="14" href="#!place/14">Простор</a></li>
+			<li><a data-id="15" href="#!place/15">Луд</a></li>
+			<li><a data-id="16" href="#!place/16">Дворфунгард</a></li>
+			<li><a data-id="17" href="#!place/17">Поборотим</a></li>
+			<li><a data-id="18" href="#!place/18">Настыр</a></li>
+			<li><a data-id="19" href="#!place/19">Ашур-Донал</a></li>
+			<li><a data-id="20" href="#!place/20">Лорадо</a></li>
+			<li><a data-id="21" href="#!place/21">Гориндор</a></li>
+			<li><a data-id="22" href="#!place/22">Лотир-Нериэн</a></li>
+			<li><a data-id="23" href="#!place/23">Лазурь</a></li>
+			<li><a data-id="24" href="#!place/24">Новогодний</a></li>
+			<li><a data-id="25" href="#!place/25">Карахен</a></li>
+			<li><a data-id="26" href="#!place/26">Коркатталь</a></li>
+			<li><a data-id="27" href="#!place/27">Карнгард</a></li>
+			<li><a data-id="28" href="#!place/28">Инд-Дирна</a></li>
+			<li><a data-id="29" href="#!place/29">Ол</a></li>
+			<li><a data-id="30" href="#!place/30">Ад-Альхар</a></li>
+			<li><a data-id="31" href="#!place/31">Мурмеллашум</a></li>
+			<li><a data-id="32" href="#!place/32">Кайлердор</a></li>
+			<li><a data-id="33" href="#!place/33">Руины</a></li>
+			<li><a data-id="34" href="#!place/34">Пёстрая Корова</a></li>
+			<li><a data-id="35" href="#!place/35">Истарост</a></li>
+			<li><a data-id="36" href="#!place/36">Тролльвиль</a></li>
+			<li><a data-id="37" href="#!place/37">Азарок</a></li>
+			<li><a data-id="38" href="#!place/38">Кель-Абан</a></li>
+			<li><a data-id="39" href="#!place/39">Сва-Лок</a></li>
+			<li><a data-id="40" href="#!place/40">Синам-Сиджас</a></li>
+			<li><a data-id="41" href="#!place/41">Сухой Дол</a></li>
+			<li><a data-id="42" href="#!place/42">Харир</a></li>
+			<li><a data-id="43" href="#!place/43">Эйндалион</a></li>
+			<li><a data-id="44" href="#!place/44">Таргард</a></li>
 		</ul>
 	</nav>
 
@@ -57,8 +108,7 @@
 <script src="static/js/vendor/minivents.min.js"></script>
 <script src="static/js/utils/tables.js"></script>
 
-<script src="static/js/app.js"></script>
-<script src="static/js/index.js"></script>
+<script src="static/js/main.js"></script>
 <script src="static/js/place.js"></script>
 <script src="static/js/places.js"></script>
 <script src="static/js/council.js"></script>
