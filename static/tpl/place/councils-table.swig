@@ -48,11 +48,32 @@
 								{% endfor %}
 							{% endif %}
 						{% endfor %}
-						{% if !council.enemies && !council.friends %}
+						<!--{% if !council.enemies && !council.friends %}
 							<li class="list-group-item1">нет</li>
-						{% endif %}
+						{% endif %}-->
 					</ul>
-					<!--</div>-->
+					{% if council.councilModifiers %}
+						<br>
+						<span class="text-info" title="В скобках указано значение при наличии постройки">Специализация при полном влиянии:</span>
+						<br>
+						{% for modifier in council.councilModifiers %}
+							{{ modifier.name }}: {{ modifier.value }}
+							{#% if modifier.value != modifier.valueB %#}
+								({{ modifier.valueB }})
+							{#% endif %#}
+							<br>
+						{% endfor %}
+					{#
+					{% elif council.totalModifiers %}
+						{% set total = 0 %}
+						{% for councilModifier in council.totalModifiers %}
+							{% if loop.index0 %} + {% endif %}
+							{{ councilModifier.inf }}% * {{ councilModifier.modifier.value }}
+							{% set total = total + councilModifier.inf * councilModifier.modifier.value / 100 %}
+						{% endfor %}
+						= {{ total }}
+					#}
+					{% endif %}
 				</div>
 			</li>
 		{% endfor %}

@@ -38,7 +38,7 @@ window.app.pages.place = (function(_place) {
 		app.dom.header(header);
 
 		var html = '';
-		html += drawCouncils(placeLogs, placeId);
+		html += drawCouncils(placeLogs, cellLogs, placeId);
 
 		html += drawTable('parameters', cellLogs[0]);
 		html += drawTable('modifiers', cellLogs[0], 1);
@@ -52,22 +52,23 @@ window.app.pages.place = (function(_place) {
 		//});
 	}
 
-	function drawCouncils(placeLogs, placeId) {
+	function drawCouncils(placeLogs, cellLogs, placeId) {
 		var html = '<h2>Советники</h2>';
-		html += drawCouncilsTable(placeLogs, placeId);
+		html += drawCouncilsTable(placeLogs, cellLogs, placeId);
 		return html
 	}
 
-	function drawCouncilsTable(placeLogs, placeId) {
+	function drawCouncilsTable(placeLogs, cellLogs, placeId) {
 		var placeLog = placeLogs[0];
+		var spec = cellLogs[0].spec;
 		var councilsList = [];
-		$.each(placeLog, function(councilId, council) {
+		$.each(placeLog, function(councilId, councilLog) {
 			if (councilId == 'date') return;
 			councilId = +councilId;
-			var councilData = $.extend({id: councilId}, council);
+			var councilData = $.extend({id: councilId}, councilLog);
 			['friends', 'enemies'].forEach(function(relation) {
-				if (!council[relation]) return;
-				var councilRelation = council[relation].map(function(playerId) {
+				if (!councilLog[relation]) return;
+				var councilRelation = councilLog[relation].map(function(playerId) {
 					var date = lastPresentInLogs(playerId, councilId, relation, placeLogs);
 					var days = moment().diff(date || app.logStart, 'd');
 					return {
@@ -82,9 +83,26 @@ window.app.pages.place = (function(_place) {
 			});
 
 			if (councilId) {
-				councilData.councilHtml = app.draw.councilShort(councilId, council)
+				councilData.councilHtml = app.draw.councilShort(councilId, councilLog);
+				var council = app.json.councils[councilId];
+				//[name, placeId, RACES.indexOf(race), PROFS.indexOf(prof), MASTERIES.indexOf(mastery)]
+				var race = council[2];
+				var prof = council[3];
+				var mastery = council[4];
+				var verbose = app.json.verbose;
+				var masteryClean = verbose.masteryByProfRace[prof][race];
+				councilData.masteryClean = masteryClean;
+				var councilModifiers = verbose.modifiers.map(function(modifierName, modifierId) {
+					return {
+						id: modifierId,
+						name: modifierName,
+						value: verbose.infByProfSpec[prof][modifierId] * masteryClean / 10,
+						valueB: verbose.infByProfSpec[prof][modifierId] * Math.min(10, masteryClean + 1) / 10
+					};
+				}).sort(function(a,b) { return b.value - a.value; });
+				councilData.councilModifiers = councilModifiers;
 			} else {
-				councilData.townHtml ='Город ' + app.draw.placeShort(placeId);
+				councilData.townHtml = (spec ? app.json.verbose.modifiers[spec] : 'Город' ) + ' ' + app.draw.placeShort(placeId);
 			}
 			councilsList.push(councilData)
 		});
@@ -93,6 +111,19 @@ window.app.pages.place = (function(_place) {
 			if (!b.id) return 1;
 			return b.inf - a.inf;
 		});
+		/*var topSpec = spec;
+		var totalModifiers = councilsList.slice(1).map(function(councilData) {
+			var councilModifier = councilData.councilModifiers.filter(function(modifier) { return modifier.id == topSpec; })[0];
+			var inf = councilData.inf;
+			return {
+				councilId: councilData.id,
+				modifier: councilModifier,
+				inf: inf
+			}
+		});
+		console.log(totalModifiers)
+		councilsList[0].totalModifiers = totalModifiers;*/
+
 		return app.tmpl['place/councils-table']({ councils: councilsList });
 		//return html;
 	}
