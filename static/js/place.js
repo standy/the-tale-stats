@@ -64,25 +64,11 @@ window.app.pages.place = (function(_place) {
 		var councilsList = [];
 		$.each(placeLog, function(councilId, council) {
 			if (councilId == 'date') return;
-			councilsList.push({
-				id: +councilId,
-				data: council
-			})
-		});
-		councilsList.sort(function(a, b) {
-			if (!a.id) return -1;
-			if (!b.id) return 1;
-			return b.data.inf - a.data.inf;
-		});
-		var data = {};
-		for (var i=0; i<councilsList.length; i++) {
-			var councilId = councilsList[i].id;
-			var council = councilsList[i].data;
-			var councilData = $.extend({}, council);
-
+			councilId = +councilId;
+			var councilData = $.extend({id: councilId}, council);
 			['friends', 'enemies'].forEach(function(relation) {
 				if (!council[relation]) return;
-				councilData[relation + 'Data'] = council[relation].map(function(playerId) {
+				var councilRelation = council[relation].map(function(playerId) {
 					var date = lastPresentInLogs(playerId, councilId, relation, placeLogs);
 					var days = moment().diff(date || app.logStart, 'd');
 					return {
@@ -92,7 +78,8 @@ window.app.pages.place = (function(_place) {
 						daysStr: (date ? '' : '>') + app.utils.pluralize(days, ['день', 'дня', 'дней'], ' ')
 					}
 				});
-				councilData[relation + 'Data'].sort(function(a,b) { return b.days - a.days});
+				councilRelation.sort(function(a,b) { return b.days - a.days});
+				councilData[relation] = councilRelation;
 			});
 
 			if (councilId) {
@@ -100,9 +87,14 @@ window.app.pages.place = (function(_place) {
 			} else {
 				councilData.townHtml ='Город ' + app.draw.placeShort(placeId);
 			}
-			data[councilId] = councilData;
-		}
-		return app.tmpl['place/councils-table']({ data: data });
+			councilsList.push(councilData)
+		});
+		councilsList.sort(function(a, b) {
+			if (!a.id) return -1;
+			if (!b.id) return 1;
+			return b.inf - a.inf;
+		});
+		return app.tmpl['place/councils-table']({ councils: councilsList });
 		//return html;
 	}
 

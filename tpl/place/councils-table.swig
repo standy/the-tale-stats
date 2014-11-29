@@ -1,15 +1,15 @@
 <div class="row">
 	<div class="col-lg-4">
 		<ul class="list-group">
-		{% for council in data %}
+		{% for council in councils %}
 			<li class="list-group-item">
 				{% if council.councilHtml %}
-						<span class="badge" title="влиятельность">
-							{{ council.inf }}%
-						</span>
+					<span class="badge" title="влиятельность">
+						{{ council.inf }}%
+					</span>
 				{% endif %}
 
-				<div class="panel1-heading" data-toggle="collapse" data-target="#c-{{loop.key}}">
+				<div data-toggle="collapse" data-target="#c-{{loop.key}}">
 					<span class="caret"></span>
 					{% if council.councilHtml -%}
 						{{ council.councilHtml|safe -}}
@@ -40,7 +40,7 @@
 										<span class="text-danger">Враги</span>
 									{% endif %}
 								</li>
-								{% for data in council[relation + 'Data'] %}
+								{% for data in council[relation] %}
 									<li class="list-group-item1">
 										<small class="pull-right">{{ data.daysStr }}</small>
 										{{ data.html|safe }}
