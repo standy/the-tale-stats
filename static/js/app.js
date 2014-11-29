@@ -29,7 +29,7 @@ var app = (function(app) {
 		if (app.tmpl[url]) {
 			return deferResult(app.tmpl[url]);
 		} else {
-			return app.get('tpl/' + url + '.swig')
+			return app.get('static/tpl/' + url + '.swig')
 				.done(function(tpl) {
 					app.tmpl[url] = swig.compile(tpl, {
 						filename: url + '.swig'

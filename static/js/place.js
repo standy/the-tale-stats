@@ -60,7 +60,6 @@ window.app.pages.place = (function(_place) {
 
 	function drawCouncilsTable(placeLogs, placeId) {
 		var placeLog = placeLogs[0];
-		//hash => array
 		var councilsList = [];
 		$.each(placeLog, function(councilId, council) {
 			if (councilId == 'date') return;
