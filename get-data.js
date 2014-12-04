@@ -5,10 +5,9 @@ var fs = require('fs');
 var util = require('util');
 var Q = require('q');
 var cheerio = require('cheerio');
-var proxy = 'http://proxy.ozon.ru:3128/';
-//var request = require('request');
-var request = require('request').defaults({proxy: proxy});
-//request.debug = true;
+var request = require('request');
+
+var config = extend(require('./config.json'), require('./config-local.json'));
 
 var moment = require('moment');
 moment.locale('ru');
@@ -49,8 +48,9 @@ var startTimeMinutes = 50;
 var wait = (startTimeMinutes - moment().minutes() + 60) % 60;
 
 console.log('wait %s minutes', wait);
+start();
 setTimeout(function() {
-//	start();
+	start();
 	setInterval(start, 60*60*1000);
 }, wait * 60 * 1000);
 
