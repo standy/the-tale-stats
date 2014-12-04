@@ -1,13 +1,14 @@
 process.title = 'the-tale-stats';
 require('colors');
 var extend = require('extend');
+var config = extend(require('./config.json'), require('./config-local.json'));
+
 var fs = require('fs');
 var util = require('util');
 var Q = require('q');
 var cheerio = require('cheerio');
-var request = require('request');
+var request = require('request').defaults({proxy: config.proxy});
 
-var config = extend(require('./config.json'), require('./config-local.json'));
 
 var moment = require('moment');
 moment.locale('ru');
@@ -48,14 +49,11 @@ var startTimeMinutes = 50;
 var wait = (startTimeMinutes - moment().minutes() + 60) % 60;
 
 console.log('wait %s minutes', wait);
-start();
 setTimeout(function() {
 	start();
 	setInterval(start, 60*60*1000);
 }, wait * 60 * 1000);
 
-//processCells();
-//processPlaces();
 
 //var id = '13';
 //var place = places[id];
