@@ -13,6 +13,23 @@ var request = require('request').defaults({proxy: config.proxy});
 var moment = require('moment');
 moment.locale('ru');
 
+/* for deploy */
+var gulp = require('gulp');
+var ghpages = require('gulp-gh-pages');
+var ghpagesOptions = {cacheDir: '../gh-cache'};
+
+function deploy() {
+	var deploy = gulp.src(['./data-json/**/*', './static/**/*', './tpl/**/*', './index.html'], {base: './'})
+		.pipe(ghpages(ghpagesOptions));
+
+
+	var defer = Q.defer();
+	deploy.on('data', function() {});
+	deploy.on('end', defer.resolve);
+	return defer.promise;
+}
+/* eo for deploy */
+
 var readFile = Q.denodeify(fs.readFile);
 var writeFile = Q.denodeify(fs.writeFile);
 var removeFile = Q.denodeify(fs.unlink);
@@ -45,8 +62,7 @@ var PROFS = verbose.profs;
 var MASTERIES = verbose.masteries;
 
 
-var startTimeMinutes = 50;
-var wait = (startTimeMinutes - moment().minutes() + 60) % 60;
+var wait = (config.startMinute - moment().minutes() + 60) % 60;
 
 console.log('wait %s minutes', wait);
 setTimeout(function() {
@@ -76,6 +92,7 @@ function start() {
 		.then(function() {
 			return writeFile(root + 'lastLog.json', JSON.stringify(lastLog));
 		})
+		.then(deploy)
 		.catch(logAppError('process'))
 		.done();
 }
