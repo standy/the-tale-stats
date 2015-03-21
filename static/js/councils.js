@@ -91,6 +91,7 @@ window.app.pages.councils = (function(_councils) {
 		$.each(app.json.councils, function(councilId, council) {
 			var placeId = council[1];
 			var placeLog = app.json.lastLog.placeLog[placeId];
+			if (!placeLog) return;
 			var councilData = placeLog[councilId] || false;
 
 			dataList.push([

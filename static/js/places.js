@@ -80,6 +80,7 @@ window.app.pages.places = (function(_places) {
 		$.each(app.json.places, function(placeId) {
 			var cellLog = app.json.lastLog.cellLog[placeId];
 			var placeLog = app.json.lastLog.placeLog[placeId];
+			console.log('app.json.lastLog.placeLog', placeLog);
 			var place = app.json.places[placeId];
 			var spec = cellLog.spec;
 			if (spec === undefined) spec = Infinity;

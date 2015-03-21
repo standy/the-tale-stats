@@ -85,22 +85,25 @@ window.app.pages.place = (function(_place) {
 			if (councilId) {
 				councilData.councilHtml = app.draw.councilShort(councilId, councilLog);
 				var council = app.json.councils[councilId];
-				//[name, placeId, RACES.indexOf(race), PROFS.indexOf(prof), MASTERIES.indexOf(mastery)]
-				var race = council[2];
-				var prof = council[3];
-				var mastery = council[4];
-				var verbose = app.json.verbose;
-				var masteryClean = verbose.masteryByProfRace[prof][race];
-				councilData.masteryClean = masteryClean;
-				var councilModifiers = verbose.modifiers.map(function(modifierName, modifierId) {
-					return {
-						id: modifierId,
-						name: modifierName,
-						value: verbose.infByProfSpec[prof][modifierId] * masteryClean / 10,
-						valueB: verbose.infByProfSpec[prof][modifierId] * Math.min(10, masteryClean + 1) / 10
-					};
-				}).sort(function(a,b) { return b.value - a.value; });
-				councilData.councilModifiers = councilModifiers;
+//				console.log('council', council);
+				if (council[0]) {
+					//[name, placeId, RACES.indexOf(race), PROFS.indexOf(prof), MASTERIES.indexOf(mastery)]
+					var race = council[2];
+					var prof = council[3];
+					var mastery = council[4];
+					var verbose = app.json.verbose;
+					var masteryClean = verbose.masteryByProfRace[prof][race];
+					councilData.masteryClean = masteryClean;
+					var councilModifiers = verbose.modifiers.map(function(modifierName, modifierId) {
+						return {
+							id: modifierId,
+							name: modifierName,
+							value: verbose.infByProfSpec[prof][modifierId] * masteryClean / 10,
+							valueB: verbose.infByProfSpec[prof][modifierId] * Math.min(10, masteryClean + 1) / 10
+						};
+					}).sort(function(a,b) { return b.value - a.value; });
+					councilData.councilModifiers = councilModifiers;
+				}
 			} else {
 				councilData.townHtml = (spec ? app.json.verbose.modifiers[spec] : 'Город' ) + ' ' + app.draw.placeShort(placeId);
 			}
@@ -207,7 +210,7 @@ window.app.pages.place = (function(_place) {
 		function drawEventPlayers(players, councilId, isFriend, isAdded) {
 			return players.map(function(playerId) {
 				return app.draw.playerEvent(playerId, councilId, isFriend, isAdded)
-			}).join('');
+			}).join('<br>');
 		}
 	}
 
